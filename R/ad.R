@@ -73,7 +73,7 @@ ad.test<-function(y){
     AD_combined=AD_main(matrix(y,ncol=1))
   }
 
-  out_list<-c(AD_areas = AD_areas ,AD_combined=AD_combined)
+  out_list<-c(AD = AD_areas ,AD_combined=AD_combined)
 
   return(out_list)
 }

@@ -3,8 +3,8 @@
 data1=read.csv("~/Dropbox/t1Data2.csv")
 data1<-data1[,2:4]
 
-#test data as a null, 100 random variates, all standard normal, split in 5 sets of 20
-x<-matrix(rnorm(100), ncol=5)
+#test data as a null, 60 random variates, all standard normal, split in 3 sets of 20
+x<-matrix(rnorm(60), ncol=3) #5% cutoff approx 0.70
 
 #each column (area) one at a time (5 sets of g=1)
 apply(x,2,ad.test)
