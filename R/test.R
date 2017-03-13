@@ -1,16 +1,19 @@
 
 #read in data.
-data1=read.csv("~/Dropbox/t1Data2.csv")
-data1<-data1[,2:4]
+data2=read.csv("~/Downloads/S1Data2.csv")
+data1=read.csv("~/Downloads/S1Data1.csv")
+
+data2<-data2[,2:4]
+data1<-data1[,2:5]
+
+ad.test(data1, pooled = F)
+ad.test(data1, pooled = T)
+
+ad.test(data2, pooled = F)
+ad.test(data2, pooled = T)
+
 
 #test data as a null, 60 random variates, all standard normal, split in 3 sets of 20
-x<-matrix(rnorm(60), ncol=3) #5% cutoff approx 0.70
-
-#each column (area) one at a time (5 sets of g=1)
-apply(x,2,ad.test)
-#all at once, does pooled s^2 and then combines areas
-ad.test(x)
-
-apply(data1,2,ad.test) # B and C are normal, A is not
-ad.test(data1) #A not normal, result hard to interpret
-ad.test(data1[,2:3]) #A excluded, B and C have clear heteroskedastic signature
+x<-matrix(rnorm(180), ncol=3) #5% cutoff approx 0.70
+ad.test(x, pooled = F)
+ad.test(x, pooled = T)

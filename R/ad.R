@@ -58,24 +58,54 @@ AD_main <- function(y) {
 
 
 
-ad.test<-function(y){
+ad.test<-function(y, pooled=F){
   y<-as.matrix(y)
   g<-dim(y)[2]
-
-  AD_areas = AD_main(y)
+  out<-NA
 
   #For each value of g, it outputs . A, A_1, and A_2 (first two components of A) ,
   #and the value of A and A-1,A-2 for the areas combined if g>1
 
-  if(g==1){
-    AD_combined=NULL
-  }else{
-    AD_combined=AD_main(matrix(y,ncol=1))
+  if((g>1 & pooled==F)| g==1){
+
+    AD_sep<-array(0,g)
+    pooled=F
+
+    for(i in 1:g){
+      AD_sep[i]<-AD_main(as.matrix(y[,i], ncol=1))[1]
+    }
+
+    out<-matrix(AD_sep, ncol=1)
+
+    if(!is.null(colnames(y))){
+      row.names(out)<-paste0("Group_", (colnames(y)))
+    }else{
+      row.names(out)<-paste0("Group_", (1:g))
+    }
+
+    colnames(out)<-c("A")
+
   }
 
-  out_list<-c(AD = AD_areas ,AD_combined=AD_combined)
 
-  return(out_list)
+  if(g>1 & pooled==T){
+
+    AD_areas = AD_main(y)
+    AD_combined=AD_main(matrix(y,ncol=1))
+    out_list<-c(AD = AD_areas ,AD_combined=AD_combined)
+    out<-as.data.frame(AD_areas)
+    out<-rbind(out,AD_combined)
+    colnames(out)<-c("A", "A_1", "A_2")
+
+    if(!is.null(colnames(y))){
+      row.names(out)<-c(paste0("Group_", (colnames(y))), "Combined")
+    }else{
+      row.names(out)<-c(paste0("Group_", (1:g)), "Combined")
+    }
+
+  }
+
+  return(out)
 }
 
 
